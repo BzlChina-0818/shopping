@@ -106,7 +106,9 @@ app.post('/api/goodlist', function(req, res, next) {
             console.log(err)
             res.send({ code: 10000, msg: "超时" })
         } else {
-            res.send({ code: 10001, msg: "没有超时" })
+            let shopinfo = JSON.parse(fs.readFileSync('./shopinfo.json', 'utf-8'));
+            res.send({ code: 10001, info: shopinfo[decode.username] })
+                // res.send({ code: 10001, msg: "没有超时" })
         }
     })
 
@@ -122,16 +124,31 @@ app.post('/api/shopinfo', function(req, res, next) {
         } else {
             let shopinfo = JSON.parse(fs.readFileSync('./shopinfo.json', 'utf-8'));
             console.log(decode)
-                // for (let key in shopinfo) {
+            let o = {
+                ...info,
+                count: 1
+            }
+
             if (shopinfo[decode.username]) {
-                console.log('22')
-                shopinfo[decode.username].push(info)
+                let flag = shopinfo[decode.username].some((item, index) => {
+                        if (item.wname === info.wname) {
+                            ++item.count
+                            return true
+                        } else {
+                            return false
+                        }
+                    })
+                    // console.log(flag)
+                if (!flag) {
+                    shopinfo[decode.username].push(o)
+                }
+
             } else {
-                shopinfo[decode.username] = [info]
+                shopinfo[decode.username] = [o]
             }
             fs.writeFileSync('./shopinfo.json', JSON.stringify(shopinfo))
 
-            res.send({ msg: "成功" })
+            res.send({ msg: shopinfo })
         }
     })
 
@@ -140,6 +157,7 @@ app.post('/api/shopinfo', function(req, res, next) {
     next()
         //console.log(info)
 })
+
 app.listen(3200, function() {
     console.log('我是端口3000')
 })
