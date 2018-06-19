@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        
+        .active {
+            background: lime;
+        }
+        
+        .hign {
+            background: limegreen;
+        }
+        
+        .hinger {
+            background: pink;
+        }
+        
+        .box2 {
+            display: flex;
+        }
+        
+        span {
+            padding: 0 10px;
+        }
+        
+        .box2 li {
+            margin: 0 10px;
+        }
+    </style>
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="box">
+            <span>
+                不限
+            </span>
+            <span>
+                专科
+            </span>
+            <span>
+                本科
+            </span>
+        </div>
+        <div class="abc">
+            <span>不限</span>
+            <span>
+                一流大学
+            </span>
+            <span>985大学</span>
+        </div>
+        <ul class="box2">
+            <li>不限</li>
+            <li>北京</li>
+            <li>上海</li>
+            <li>广州</li>
+            <li>山西</li>
+            <li>西安</li>
+        </ul>
+    </div>
+    <script src="./index.js"></script>
+    <script>
+        new SignPublic({
+            wrap: '.box',
+            item: "span",
+            activeClass: "active",
+            flag: false
+        })
+        new SignPublic({
+            wrap: '.box2',
+            item: "li",
+            activeClass: "hign",
+            flag: true
+        })
+        new SignPublic({
+            wrap: '.abc',
+            item: "span",
+            activeClass: "hinger",
+            flag: false
+        })
+    </script>
+</body>
+
+</html>

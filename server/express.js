@@ -93,7 +93,7 @@ app.post('/api/login', function(req, res, next) {
         }
     })
     if (state) {
-        res.send({ code: 0, msg: "登录成功", token: jwt.sign(query, 'bzl', { expiresIn: 60 * 2 }) })
+        res.send({ code: 0, msg: "登录成功", token: jwt.sign(query, 'bzl', { expiresIn: 60 * 60 }) })
     } else {
         res.send({ code: 1, msg: "登录失败" })
     }
@@ -111,6 +111,34 @@ app.post('/api/goodlist', function(req, res, next) {
     })
 
     next()
+})
+app.post('/api/shopinfo', function(req, res, next) {
+    let info = req.body.info;
+    //console.log(info);
+    console.log(req.body.token)
+    let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+        if (err) {
+            res.send({ code: 0 })
+        } else {
+            let shopinfo = JSON.parse(fs.readFileSync('./shopinfo.json', 'utf-8'));
+            console.log(decode)
+                // for (let key in shopinfo) {
+            if (shopinfo[decode.username]) {
+                console.log('22')
+                shopinfo[decode.username].push(info)
+            } else {
+                shopinfo[decode.username] = [info]
+            }
+            fs.writeFileSync('./shopinfo.json', JSON.stringify(shopinfo))
+
+            res.send({ msg: "成功" })
+        }
+    })
+
+    //  console.log(info)
+
+    next()
+        //console.log(info)
 })
 app.listen(3200, function() {
     console.log('我是端口3000')

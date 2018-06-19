@@ -10,8 +10,7 @@ export default {
     mounted(){
           let islogin =getCookie('token')
            if(islogin){
-              // console.log(to)
-              // next()
+              
            }else{
                 this.$router.push({name:"login",query:{url:"myperson"}})
            }

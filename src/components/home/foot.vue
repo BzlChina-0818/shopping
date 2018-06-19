@@ -1,7 +1,5 @@
 <template>
-    <div>
-        社交类
-    </div>
+    
 </template>
 
 <script>

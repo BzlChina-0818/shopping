@@ -1,26 +1,40 @@
 <template>
+
     <div>
-        <router-link :to="{name:'detail',query:{data:shopcon}}">
-             <dl>     
+        <!-- <router-link :to="{name:'detail',query:{data:shopcon}}"> -->
+             <dl @click="todetail(shopcon)">     
                       <dt><img v-lazy="shopcon.imageurl
 " alt=""></dt>
                       <dd>{{shopcon
-.wname}}</dd>
+.wname}}   <i class="icon iconfont icon-gouwuche" @click.stop="addshopinfo(shopcon)"></i> </dd>
                   </dl>          
               
-        </router-link>       
+        <!-- </router-link>        -->
          </div>         
      
 </template>
 
 <script>
+import {getCookie} from '../../until/decode.js'
 export default {
   props: {
     shopcon: {
       required: true,
       type: Object
     }
-  }
+  },
+  methods:{
+    todetail(shopcon){
+        this.$router.push({name:'detail',query:{data:shopcon}})
+    },
+    addshopinfo(info){
+        let token =  getCookie('token')
+      this.$http.post('http://localhost:3200/api/shopinfo',{info,token}).then((res)=>{
+               console.log(res)
+      }) 
+             // console.log(info)
+    } 
+    }
 };
 </script>
 
@@ -40,6 +54,12 @@ dl {
         display: -moz-box;
         -moz-line-clamp: 2;
         -moz-box-orient: vertical;
+        padding-right:.4rem;
+        box-sizing: border-box;
+        height: 2rem;
+        i.icon{
+          font-size: .6rem;
+        }
         
   }
   dt {
