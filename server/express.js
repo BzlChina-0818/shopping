@@ -157,6 +157,50 @@ app.post('/api/shopinfo', function(req, res, next) {
     next()
         //console.log(info)
 })
+app.post('/api/add', function(req, res, next) {
+    let info = req.body;
+    //console.log(info);
+    console.log(req.body.token)
+    let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+        if (err) {
+            res.send({ code: 0 })
+        } else {
+            let shopinfo = JSON.parse(fs.readFileSync('./shopinfo.json', 'utf-8'));
+
+            console.log('222')
+
+            let shoplist = shopinfo[decode.username].map((item, index) => {
+                if (info.type == "add") {
+                    if (item.wareId === info.id) {
+                        ++item.count
+                        return item
+                    } else {
+                        return item
+                    }
+
+                } else {
+                    if (item.wareId === info.id) {
+                        --item.count
+                        return item
+                    } else {
+                        return item
+                    }
+                }
+
+            })
+            console.log(shoplist)
+            shopinfo[decode.username] = shoplist
+                // console.log(flag)
+
+
+            fs.writeFileSync('./shopinfo.json', JSON.stringify(shopinfo))
+
+            res.send({ msg: shopinfo[decode.username], code: 1 })
+        }
+    })
+
+    next()
+})
 
 app.listen(3200, function() {
     console.log('我是端口3000')

@@ -2,11 +2,17 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 Vue.use(Vuex)
 import { instance } from '../until/http'
+import router from '../router/index'
+import { getCookie } from '../until/decode'
 let store = new Vuex.Store({
     state: {
         capotorlist: {
 
-        }
+        },
+        shoplist: [
+
+        ]
+
     },
     mutations: {
         updatalist(state, data) {
@@ -16,7 +22,9 @@ let store = new Vuex.Store({
 
             state.capotorlist = newData
             console.log(state.capotorlist)
-
+        },
+        upshoplist(state, data) {
+            state.shoplist = data
         }
     },
     actions: {
@@ -31,10 +39,18 @@ let store = new Vuex.Store({
 
                 })
             }
+        },
+        fetchShopList({ state, commit }, playload) {
+            instance.post('http://localhost:3200/api/goodlist', { token: getCookie('token') }).then((res) => {
+                if (res.code === 10001) {
+                    commit('upshoplist', res.info)
 
-
-
-
+                    // console.log('1')
+                } else {
+                    router.push({ name: "login", query: { url: "shopcar" } })
+                }
+                // console.log(res)
+            })
         }
     }
 

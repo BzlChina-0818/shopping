@@ -12,24 +12,11 @@
 			</div>
 		</div>
 		<div class='main'>
-			<div class="list" v-show="data.length==0">
+			<div class="list" v-show="this.$store.state.shoplist.length==0">
 				你的购物车啥也没有！
 			</div>
-			<div class="list" v-show="data.length!=0" v-for="val in data"> 
-				<input type="checkbox" v-model="val.jdShop" />
-				<img :src="val.imageurl" />
-				<div class="listRight">
-					<p class="text">{{val.wname}}</p>
-					<div>
-						<b>${{val.jdPrice}}</b>
-						<p> 
-							<span>-</span>
-							<span>{{val.count}}</span>
-							<span @click="add(val.wareId)">+</span>
-					   </p>
-					</div>
-				</div>
-			</div>
+			<shoplist @updata ="changeCount" v-for="val in this.$store.state.shoplist" :list="val" @upprice="changePrice"></shoplist>
+			
 		</div>
 		<div class="bottom">
 			<div class="bottomLeft">
@@ -38,7 +25,7 @@
 			</div>
 			<div class="bottomRight">
 				<div class="allPrice">
-					<span>合计<b>$0</b></span>
+					<span>合计<b>${{allPrice}}</b></span>
 					<span>(运费：￥0)</span>
 				</div>
 				<div>
@@ -51,30 +38,83 @@
 
 <script>
 import {getCookie} from '../../until/decode.js'
+import  shoplist from '../common/shoplist'
+import {mapActions} from 'vuex'
 export default {
     
     data(){
         return {
-			data:[],
-			count:1
+			
+			count:1,
+			arr:[],
+			allPriceone:0,
+			newArr:[]
         }
-    },
-    beforeCreate(){
-         this.$http.post('http://localhost:3200/api/goodlist',{token:getCookie('token')}).then((res)=>{
-             if(res.code===10001){
-				this.data = res.info
-              // console.log('1')
-             }else{
-                 this.$router.push({name:"login",query:{url:"shopcar"}})
-             }
-            // console.log(res)
-         })
-    },
-    methods:{
-        add(id){
-                 console.log(id)
-        }
-    }
+	},
+	computed:{
+      allPrice(){
+		  this.newArr = this.arr.map((v,ind)=>{
+                 return v.acount
+		   })
+		 // console.log(this.arr)
+		  return  this.newArr.reduce((one,two)=>{
+			   //console.log(one,two)
+              return one+two
+		  },0)
+	  }     
+	},
+ created(){
+	  this.fetchShopList()
+        //  this.$http.post('http://localhost:3200/api/goodlist',{token:getCookie('token')}).then((res)=>{
+        //      if(res.code===10001){
+		// 		this.data = res.info
+        //       // console.log('1')
+        //      }else{
+        //          this.$router.push({name:"login",query:{url:"shopcar"}})
+        //      }
+        //     // console.log(res)
+        //  })
+	},
+	methods:{
+			 ...mapActions(['fetchShopList']),
+			 changeCount(){
+				 console.log('2')
+					 console.log('3')
+					this.fetchShopList()
+					 //this.$forceUpdate()
+				
+			 },
+			 changePrice(msg){
+				   if(msg.acount>0){
+					   console.log(msg)
+					   let ad  ;
+					let flag  =  this.arr.some((v,ind)=>{
+						
+                         if(v.id ==msg.id){
+							  
+                               return true
+						 }else{
+							  return false 
+						 }
+					   })
+					   if(!msg.tag){
+						   
+					   }
+					   if(flag){
+						   //this.arr.push()
+					   }else{
+                            this.arr.push(msg)
+					   }
+					  
+				   }
+                    console.log(this.arr)
+			 }
+	},
+	
+   
+	components:{
+		shoplist
+	}
 
    
    
@@ -118,49 +158,7 @@ span{
 	left: 50%;
 	transform: translatex(-50%);
 }
-.list{
-	width: 100%;
-	height:2.65rem;
-	display:flex;
-	margin-bottom:.2rem;
-	background-color:#fff;
-	align-items:center;
-	justify-content:space-around;
-}
-.list img{
-	width: 2rem;
-}
-.listRight{
-	width: 4.2rem;
-	height: 2rem;
-	display:flex;
-	flex-direction:column;
-	justify-content:space-around;
-}
-.listRight input {
-	width: 1rem;
-	height: .6rem;
-	outline: none;
-	border: .01rem solid #ccc;
-	text-align: center;
-}
-.listRight ul{
-	display:flex;
-}
-.listRight ul{
-	justify-content:space-between;	 
-}
-.listRight ul li b{
-	color:red;
-}
-.listRight ul li span{
-	display:inline-block;
-	height: .6rem;
-	width: .6rem;
-	border: .01rem solid #ccc;
-	text-align: center;
-	line-height: .6rem;
-}
+
 .bottom{
 	width: 100%;
 	height: .97rem;
