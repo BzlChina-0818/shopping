@@ -142,9 +142,13 @@ export default {
       display: flex;
       overflow: hidden;
       .scroller{
-          
+          width:100%;
+          height:100%;
           .list{
               width:100%;
+              height:100%;
+              display: flex;
+              flex-direction: column;
               li{
                   height:.8rem;
                   border-bottom: .02rem solid #ccc;

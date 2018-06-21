@@ -7,7 +7,7 @@
 				<span>购物车</span>
 			</div>
 			<div>
-				<span class="bianji">编辑</span>
+				<span class="bianji" @click="changeEdit">{{edit}}</span>
 				<span>✉</span>
 			</div>
 		</div>
@@ -15,12 +15,12 @@
 			<div class="list" v-show="this.$store.state.shoplist.length==0">
 				你的购物车啥也没有！
 			</div>
-			<shoplist @updata ="changeCount" v-for="val in this.$store.state.shoplist" :list="val" @upprice="changePrice"></shoplist>
+			<shoplist @updata ="changeCount" v-for="val in this.$store.state.shoplist" :list="val" @upprice="changePrice" ref="listshop"></shoplist>
 			
 		</div>
 		<div class="bottom">
 			<div class="bottomLeft">
-				<input type="checkbox">
+				<input type="checkbox" @change="allCheck(flag)" v-model="flag">
 				<span>全选</span>
 			</div>
 			<div class="bottomRight">
@@ -29,7 +29,7 @@
 					<span>(运费：￥0)</span>
 				</div>
 				<div>
-					<button>结算</button>
+					<button @click="changeAccount">{{closeAccount}}</button>
 				</div>
 			</div>
 		</div>
@@ -47,15 +47,20 @@ export default {
 			
 			count:1,
 			arr:[],
-			allPriceone:0,
-			newArr:[]
+			newArr:[],
+			flag:false,
+			edit:"编辑",
+			closeAccount:"结算"
         }
 	},
 	computed:{
       allPrice(){
-		  this.newArr = this.arr.map((v,ind)=>{
+		 
+			   this.newArr = this.arr.map((v,ind)=>{
                  return v.acount
-		   })
+		      })
+		  
+		 
 		 // console.log(this.arr)
 		  return  this.newArr.reduce((one,two)=>{
 			   //console.log(one,two)
@@ -78,36 +83,114 @@ export default {
 	methods:{
 			 ...mapActions(['fetchShopList']),
 			 changeCount(){
-				 console.log('2')
-					 console.log('3')
+				
 					this.fetchShopList()
 					 //this.$forceUpdate()
 				
 			 },
+			 changeEdit(){
+				 console.log('1')
+				 console.log(this.edit)
+                if(this.edit=="编辑"){
+					this.edit ="完成"
+					this.closeAccount="删除"
+				}else{
+					this.edit ="编辑"
+					 this.closeAccount="结算"
+				}
+			 },
+			 changeAccount(){
+                 if(this.closeAccount=="删除"){
+					 let  deleArr =[]
+					this.$refs.listshop.forEach((v,ind)=>{
+						if(v.jdShop){
+                           deleArr.push(v.list.wareId)
+						}
+						
+					})
+					console.log(deleArr)
+					 //this.closeAccount="删除"
+					 this.$http.post('http://localhost:3200/api/deleinfo',{
+						 token:getCookie('token'),
+						 id:deleArr
+					 }).then((res)=>{
+						 if(res.msg==="成功"){
+							 this.fetchShopList()
+						 }
+                        // console.log(res)
+					 })
+				 }
+			 },
 			 changePrice(msg){
+				   console.log(msg)
 				   if(msg.acount>0){
-					   console.log(msg)
-					   let ad  ;
+					   //console.log(msg)
+					  // let ad  ;
 					let flag  =  this.arr.some((v,ind)=>{
 						
                          if(v.id ==msg.id){
-							  
+							   //v.acount = msg.acount
                                return true
 						 }else{
 							  return false 
 						 }
 					   })
-					   if(!msg.tag){
-						   
-					   }
+					  
+					 
 					   if(flag){
-						   //this.arr.push()
+						   console.log(this.arr)
+						   let  ad;
+						   this.arr.forEach((v,ind)=>{
+                                if(v.acount ==msg.acount){
+
+								}else{
+									 ad = ind 
+								}
+							   
+						   })
+						   this.arr.splice(ad,1,msg)
+						   console.log(this.arr)
+						
 					   }else{
                             this.arr.push(msg)
 					   }
+					   console.log(this.arr)
 					  
+				   }else{
+					   let ind ;
+					  let flag = this.arr.some((v,index)=>{
+                             if(v.id===msg.id){
+								 ind = index
+								 return true
+							 }else{
+								 return false
+							 }
+					  })
+					  if(flag){
+
+						  this.arr.splice(ind,1)
+					  }
 				   }
-                    console.log(this.arr)
+                  //  console.log(this.arr)
+			 },
+			 allCheck(flag){
+				  flag = !flag
+				
+				if(!flag){
+					this.newArr = [] 
+					 let allCount = 0 
+				 	this.$store.state.shoplist.forEach((v,inde)=>{
+                             allCount +=   v.jdPrice * v.count
+					})
+					console.log(allCount)
+					console.log(this.newArr)
+					this.newArr.push(allCount)
+					//this.$store.state.shoplist
+				}else{
+					this.newArr = [] 
+				}
+					
+				
 			 }
 	},
 	

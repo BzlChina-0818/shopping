@@ -201,6 +201,96 @@ app.post('/api/add', function(req, res, next) {
 
     next()
 })
+app.post('/api/deleinfo', function(req, res, next) {
+    let info = req.body;
+    //console.log(info);
+    // console.log(req.body.token)
+    let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+        if (err) {
+            res.send({ code: 0 })
+        } else {
+            let shopinfo = JSON.parse(fs.readFileSync('./shopinfo.json', 'utf-8'));
+            let arr = info.id;
+            let newArr = []
+            let shopinfoArr = shopinfo[decode.username]
+                //console.log(shopinfo[decode.username])
+            shopinfoArr.forEach((item, index) => {
+                newArr.push(item.wareId)
+            })
+            console.log(arr)
+            newArr.forEach((item, index) => {
+
+                    arr.forEach((v, ind) => {
+                        // console.log(v)
+                        // console.log(item)
+                        let con = newArr.indexOf(v)
+                        console.log(con)
+                        if (con > -1) {
+
+                            // console.log('2')
+                            // console.log(arr)
+                            shopinfoArr.splice(con, 1)
+                            newArr.splice(con, 1)
+                        }
+                    })
+                })
+                //shopinfo[decode.username] = shopinfoArr
+            console.log(shopinfoArr.length)
+                // console.log(arr)
+                // shopinfo[decode.username].forEach((item, index) => {
+                //         arr.forEach((v, ind) => {
+                //             if (item.wareId === v) {
+                //                 newArr.push(item)
+                //             }
+                //         })
+                //     })
+                //     //console.log(arr)
+                // console.log(newArr.length)
+
+            // shopinfo[decode.username].forEach((item, index) => {
+            //         console.log(item.wareId)
+            //         newArr.forEach((v, ind) => {
+            //             // let spliceInd;
+            //             if (item.wareId == v.wareId) {
+            //                 // console.log(true)
+            //                 // spliceInd = index
+            //                 //console.log(spliceInd)
+            //                 shopinfo[decode.username].splice(index, 1)
+            //             }
+            //             // let con = shopinfo[decode.username].indexOf(v)
+
+
+
+            //         })
+            //     })
+            // console.log(shopinfo[decode.username].length)
+
+
+            // let shoplist = shopinfo[decode.username].map((item, index) => {
+
+            //     if (item.wareId === info.id) {
+            //         ++item.count
+            //         return item
+            //     } else {
+            //         return item
+            //     }
+
+            // })
+
+
+            //nsole.log(shoplist)
+            // shopinfo[decode.username] = shoplist
+            // console.log(flag)
+
+
+            fs.writeFileSync('./shopinfo.json', JSON.stringify(shopinfo))
+            res.send({ msg: "成功" })
+
+            //res.send({ msg: shopinfo[decode.username], code: 1 })
+        }
+    })
+    next()
+})
 
 app.listen(3200, function() {
     console.log('我是端口3000')
