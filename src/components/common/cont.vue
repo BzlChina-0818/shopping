@@ -21,6 +21,9 @@ export default {
     shopcon: {
       required: true,
       type: Object
+    },
+    ins:{
+      type:Object
     }
   },
   methods:{
@@ -30,6 +33,8 @@ export default {
     addshopinfo(info){
         let token =  getCookie('token')
       this.$http.post('http://localhost:3200/api/shopinfo',{info,token}).then((res)=>{
+       
+         this.ins.isActive= true
                console.log(res)
       }) 
              // console.log(info)

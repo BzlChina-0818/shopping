@@ -213,28 +213,20 @@ app.post('/api/deleinfo', function(req, res, next) {
             let arr = info.id;
             let newArr = []
             let shopinfoArr = shopinfo[decode.username]
-                //console.log(shopinfo[decode.username])
             shopinfoArr.forEach((item, index) => {
                 newArr.push(item.wareId)
             })
-            console.log(arr)
             newArr.forEach((item, index) => {
-
-                    arr.forEach((v, ind) => {
-                        // console.log(v)
-                        // console.log(item)
-                        let con = newArr.indexOf(v)
-                        console.log(con)
-                        if (con > -1) {
-
-                            // console.log('2')
-                            // console.log(arr)
-                            shopinfoArr.splice(con, 1)
-                            newArr.splice(con, 1)
-                        }
-                    })
+                arr.forEach((v, ind) => {
+                    let con = newArr.indexOf(v)
+                    console.log(con)
+                    if (con > -1) {
+                        shopinfoArr.splice(con, 1)
+                        newArr.splice(con, 1)
+                    }
                 })
-                //shopinfo[decode.username] = shopinfoArr
+            })
+
             console.log(shopinfoArr.length)
                 // console.log(arr)
                 // shopinfo[decode.username].forEach((item, index) => {

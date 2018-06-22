@@ -13,26 +13,26 @@
         </div>
         <div class="shop">
             <span>
-                <i class="icon iconfont icon-dianpu"></i>
+                <i class="icon iconfont icon-douban"></i>
                 我的店铺
             </span>
-            <i class="icon iconfont icon-fanhui"></i>
+            <i class="icon iconfont icon-douban"></i>
         </div>
         <ul class="order">
             <li>
-                <i class="icon iconfont icon-nopayment"></i>
+              <i class="icon iconfont icon-douban"></i>
                 <span>待付款</span>
             </li>
             <li>
-               <i class="icon iconfont icon-daishouhuo"></i>
+               <i class="icon iconfont icon-douban"></i>
                 <span>待收货</span>
             </li>
             <li>
-                <i class="icon iconfont icon-daifahuo"></i>
+                <i class="icon iconfont icon-douban"></i>
                 <span>代发货</span>
             </li>
             <li>
-                <i class="icon iconfont icon-shouhou"></i>
+                <i class="icon iconfont icon-douban"></i>
                 <span>售后</span>
             </li>
             <li>
@@ -124,8 +124,13 @@ export default {
 .order li i.icon {
   font-size: 25px;
 }
+.list {
+    display: flex;
+    flex-direction: column;
+}
 .list li{
     display: flex;
+    
     justify-content: space-between;
     padding: 0 10px;
     height: 45px;

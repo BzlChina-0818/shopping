@@ -69,7 +69,7 @@
         </div>
         <ul class="contltem">
             <li v-for="item in list">
-               <contItem :shopcon="item"></contItem> 
+               <contItem :shopcon="item" :ins="$refs.addcurt" ></contItem> 
               </li> 
         </ul>
           </div>
@@ -77,7 +77,7 @@
         <!-- -->
      
         </section>
-        
+        <Total ref="addcurt">添加成功</Total>
     </div>
 </template>
 
