@@ -1,7 +1,7 @@
 <template>
     <div>
        <header class="header">
-           <i class="icon iconfont icon-xiangzuo"></i>
+           <i class="icon iconfont icon-xiangzuo" @click="backFn"></i>
            <span>我的订单</span>
            <i class="icon iconfont icon-xiaoxi"></i>
        </header>
@@ -22,7 +22,11 @@
 
 <script>
 export default {
-
+    methods:{
+        backFn(){
+            this.$router.push({name:"myperson"})
+        }
+    }
 }
 </script>
 

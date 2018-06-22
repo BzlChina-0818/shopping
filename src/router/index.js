@@ -90,6 +90,7 @@ let router = new VueRouter({
             name: "order",
             path: "/order",
             component: Order,
+            redirect: "/order/all",
             children: [{
                     name: "all",
                     path: "all",
