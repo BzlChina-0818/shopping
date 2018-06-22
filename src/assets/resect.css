@@ -52,6 +52,10 @@ var {
     font-style: normal;
 }
 
+* {
+    box-sizing: border-box;
+}
+
 code,
 kbd,
 pre,
@@ -72,9 +76,10 @@ a {
     text-decoration: none;
 }
 
-a:hover {
+
+/* a:hover {
     text-decoration: underline;
-}
+} */
 
 sup {
     vertical-align: text-top;

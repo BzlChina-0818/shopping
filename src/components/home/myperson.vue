@@ -35,7 +35,7 @@
                 <i class="icon iconfont icon-douban"></i>
                 <span>售后</span>
             </li>
-            <li>
+            <li @click="order">
                 <i class="icon iconfont icon-wodedingdan"></i>
                 <span>我的订单</span>
             </li>
@@ -49,7 +49,7 @@
                 <i class="icon iconfont icon-webicon213"></i>
             </li>
             <li>
-                <p>
+                <p @click="adress">
                     <i class="icon iconfont icon-dizhi"></i>
                     <span>地址管理</span>
                 </p>
@@ -69,6 +69,14 @@
 <script>
 import {getCookie} from '../../until/decode'
 export default {
+    methods:{
+       order(){
+           this.$router.push({name:"order"})
+       },
+       adress(){
+             this.$router.push({name:"adress"})
+       }
+    },
     mounted(){
           let islogin =getCookie('token')
            if(islogin){
@@ -85,15 +93,16 @@ export default {
 
 <style scoped>
 .header {
-  height: 40px;
-  line-height: 40px;
+  height: .8rem;
+  line-height: .8rem;
   display: flex;
   justify-content: space-between;
-  padding: 0 20px;
+  padding: 0 .4rem;
+  box-sizing: border-box;
   width: 100%;
 }
 .top {
-  height: 80px;
+  height: 1.6rem;
   width: 100%;
   /* background: url("../../img/未标题-3.png"); */
 }
@@ -101,28 +110,29 @@ export default {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  padding: 0 10px;
-  height: 80px;
-  font-size: 20px;
-  line-height: 80px;
+  padding: 0 .2rem;
+  box-sizing: border-box;
+  height: 1.6rem;
+  font-size: .4rem;
+  line-height: 1.6rem;
   color: #fc4141;
 }
 .shop span i.icon {
-  font-size: 55px;
+  font-size: 1.1rem;
 }
 .order {
   display: flex;
   justify-content: space-around;
-  height: 60px;
+  height: 1.2rem;
 }
 .order li {
   display: flex;
   flex-direction: column;
   align-items: center;
-  line-height: 30px;
+  line-height: .6rem;
 }
 .order li i.icon {
-  font-size: 25px;
+  font-size: .5rem;
 }
 .list {
     display: flex;
@@ -132,15 +142,17 @@ export default {
     display: flex;
     
     justify-content: space-between;
-    padding: 0 10px;
-    height: 45px;
-    line-height: 45px;
+    padding: 0 .2rem;
+    box-sizing: border-box;
+    
+    height: .9rem;
+    line-height: .9rem;
     border-bottom: 1px solid #eee;
 }
 .img{
-    width:60px;
+    width:1.2rem;
     margin:0 auto;
-    padding-top: 10px;
+    padding-top: .2rem;
     text-align: center;
 }
 .img img{
@@ -149,7 +161,7 @@ export default {
 }
 .img p{
     text-align: center;
-    line-height: 20px;
+    line-height: .4rem;
     color:#fff;
 }
 </style>
