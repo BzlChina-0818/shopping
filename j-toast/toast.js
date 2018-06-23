@@ -14,45 +14,46 @@
 import './toast.css'
 import ToastItem from './toast.vue'
 let Toast = {
-  install(Vue, options) {
-    const toastBus = new Vue({});
+    install(Vue, options) {
+        const toastBus = new Vue({});
 
-    Object.defineProperty(Vue.prototype, "$toastBus", {
-      value: toastBus
-    })
+        Object.defineProperty(Vue.prototype, "$toastBus", {
+            value: toastBus
+        })
 
-    //全局组建
-    Vue.component('Toast', {
-      template: `
+        //全局组建
+        Vue.component('Toast', {
+            template: `
       <div class="toast">
         <ToastItem v-for="(x,i) in msg" :key="i.toString()" :timeout="options.timeout">{{x}}</ToastItem>                 
       </div>
       `,
-      data() {
-        return {
-          msg: [],
-          options
-        }
-      },
-      components: {
-        ToastItem
-      },
-      methods: {
-        active(msg, options) {
-          if (options) {
-            this.timeout = options.timeout
-          }
+            data() {
+                return {
+                    msg: [],
+                    options
+                    // timeout: null
+                }
+            },
+            components: {
+                ToastItem
+            },
+            methods: {
+                active(msg, options) {
+                    if (options) {
+                        this.timeout = options.timeout
+                    }
 
-          this.msg.push(msg);
-        }
-      },
-      mounted() {
-        toastBus.$on('toast', (msg) => {
-          this.active(msg)
+                    this.msg.push(msg);
+                }
+            },
+            mounted() {
+                toastBus.$on('toast', (msg) => {
+                    this.active(msg)
+                })
+            }
         })
-      }
-    })
-  }
+    }
 }
 
 export default Toast

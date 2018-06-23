@@ -6,7 +6,9 @@ import Classify from '../components/home/classify'
 import Contact from '../components/home/contact'
 import Myperson from '../components/home/myperson'
 import Page from '../components/home/page'
-import Shopcar from '../components/home/shopcar'
+
+const Shopcar = () =>
+    import ( /*cart*/ '../components/home/shopcar')
 import Search from '../components/search/search'
 import Login from '../components/login/login'
 import Detail from '../components/detail/detail'
@@ -124,7 +126,7 @@ let router = new VueRouter({
 })
 router.beforeEach((to, from, next) => {
 
-    if (to.name === "shopcar" || to.name == "myperson") {
+    if (to.name === "shopcar" || to.name == "myperson" || to.name == "adress") {
         let islogin = getCookie('token');
         if (islogin) {
             next()

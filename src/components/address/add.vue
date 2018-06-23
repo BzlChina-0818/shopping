@@ -5,12 +5,13 @@
             <span>收货地址</span>
             <span></span>
         </header>
-        <div class="inforBox">
+             
+        <div class="inforBox" v-for="msg in info">
             <p>
-                <span>路飞</span>
-                <span>13344443344</span>
+                <span>{{msg.name}}</span>
+                <span>{{msg.phone}}</span>
             </p>
-            <p>北京市海淀区知春路</p>
+            <p>{{msg.city}}{{msg.citys}}{{msg.area}}{{msg.address}}</p>
             <div class="select">
                 <aside>
                     <input type="checkbox">
@@ -30,8 +31,22 @@
 </template>
 <script>
 import axios from "axios";
-//import {getCookie} from "../../../utils/cookies"
+import {getCookie} from "../../until/decode.js"
 export default {
+    data(){
+        return{
+            info:''
+        }
+    },
+    created(){
+         this.$http.post('http://localhost:3200/api/info',{
+             token:getCookie('token')
+         }).then((res)=>{
+             this.info = res.msg
+             console.log(res.msg)
+              // console.log()
+         })
+    },
     // beforeRouteEnter(to,from,next){
     //    axios.post("http://localhost:3000/getAddress",{token:getCookie("token")}).then(res=>{
     //        if(res.data.code==0){
@@ -43,11 +58,19 @@ export default {
     // },
     methods:{
         backFn(){
-            this.$router.go(-1)
+            this.$router.push({name:"myperson"})
         },
         newAdd(){
             this.$router.push({name:"newadd"})
         }
+    },
+     mounted(){
+          let islogin =getCookie('token')
+           if(islogin){
+              
+           }else{
+                this.$router.push({name:"login",query:{url:"adress"}})
+           }
     }
 }
 </script>
@@ -68,7 +91,7 @@ export default {
 }
 .inforBox {
   padding: .2rem;
-  flex:1;
+
 }
 .inforBox p {
   line-height: .6rem;

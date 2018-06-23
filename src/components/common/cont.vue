@@ -33,8 +33,8 @@ export default {
     addshopinfo(info){
         let token =  getCookie('token')
       this.$http.post('http://localhost:3200/api/shopinfo',{info,token}).then((res)=>{
-       
-         this.ins.isActive= true
+        console.log(this.ins)
+          this.ins.active('添加成功')
                console.log(res)
       }) 
              // console.log(info)

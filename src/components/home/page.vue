@@ -8,7 +8,7 @@
             </label>
             <div>
             <span>
-                <i></i>
+                <i></i>x``
                 <b>我的店铺</b>
             </span>
             <span>
@@ -77,11 +77,12 @@
         <!-- -->
      
         </section>
-        <Total ref="addcurt">添加成功</Total>
+        <Toast ref="addcurt"></Toast>
     </div>
 </template>
 
 <script>
+
 import { swiper, swiperSlide } from "vue-awesome-swiper";
 import "swiper/dist/css/swiper.css";
 import jsonp from "../../until/jsonp.js";

@@ -140,7 +140,7 @@ export default {
 }
 .list li{
     display: flex;
-    
+    width:100%;
     justify-content: space-between;
     padding: 0 .2rem;
     box-sizing: border-box;
@@ -148,6 +148,9 @@ export default {
     height: .9rem;
     line-height: .9rem;
     border-bottom: 1px solid #eee;
+}
+.list li p{
+    width:100%; 
 }
 .img{
     width:1.2rem;
@@ -160,6 +163,7 @@ export default {
     border-radius: 50%;
 }
 .img p{
+ 
     text-align: center;
     line-height: .4rem;
     color:#fff;

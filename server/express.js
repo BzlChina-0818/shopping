@@ -283,7 +283,58 @@ app.post('/api/deleinfo', function(req, res, next) {
     })
     next()
 })
+app.post('/api/adress', function(req, res, next) {
+    let info = req.body;
+    //console.log(info);
 
+    let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+        if (err) {
+            res.send({ code: 0 })
+        } else {
+            let adress = JSON.parse(fs.readFileSync('./adress.json', 'utf-8'));
+            console.log('1')
+
+            let o = {
+                name: req.body.username,
+                phone: req.body.phone,
+                address: req.body.adress,
+                city: req.body.city,
+                citys: req.body.citys,
+                area: req.body.area,
+            }
+
+
+            if (adress[decode.username]) {
+                adress[decode.username].push(o)
+
+
+            } else {
+                adress[decode.username] = [o]
+            }
+            fs.writeFileSync('./adress.json', JSON.stringify(adress))
+
+            res.send({ msg: adress })
+                //  res.send({ msg: "成功" })
+        }
+    })
+    next()
+})
+app.post('/api/info', function(req, res, next) {
+    let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+        if (err) {
+            res.send({ code: 0 })
+        } else {
+            let adress = JSON.parse(fs.readFileSync('./adress.json', 'utf-8'));
+            adressinfo = adress[decode.username]
+            console.log(decode.username)
+            console.log(adressinfo)
+            res.send({ msg: adressinfo })
+        }
+
+    })
+
+    next()
+})
 app.listen(3200, function() {
     console.log('我是端口3000')
 })

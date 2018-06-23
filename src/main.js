@@ -11,8 +11,9 @@ Vue.use(http)
 Vue.use(lazyload, {
     loading: '/src/assets/abc.jpg',
 })
-import totals from './components/plugin/total.js'
-Vue.use(totals)
+import totals from '../j-toast/index'
+import '../j-toast/toast.css'
+Vue.use(totals, 3000)
 new Vue({
     el: '#app',
     template: "<App />",
