@@ -5,8 +5,8 @@
             <span>收货地址</span>
             <span></span>
         </header>
-             
-        <div class="inforBox" v-for="msg in info">
+         <section>
+              <div class="inforBox" v-for="(msg,index) in info">
             <p>
                 <span>{{msg.name}}</span>
                 <span>{{msg.phone}}</span>
@@ -18,11 +18,13 @@
                     <span>默认地址</span>
                 </aside>
                 <aside>
-                    <span>编辑</span>
-                    <span>删除</span>
+                    <span @click="compile(index)">编辑</span>
+                    <span @click="delectadress(index)">删除</span>
                 </aside>
             </div>
         </div>
+        </section> 
+       
         <div class="footer">
             <button @click="newAdd">新增地址</button>
         </div>
@@ -47,22 +49,33 @@ export default {
               // console.log()
          })
     },
-    // beforeRouteEnter(to,from,next){
-    //    axios.post("http://localhost:3000/getAddress",{token:getCookie("token")}).then(res=>{
-    //        if(res.data.code==0){
-    //            next({name:"login",params:{from: to.name}})
-    //        }else{
-    //            next()
-    //        }
-    //     });
-    // },
     methods:{
         backFn(){
             this.$router.push({name:"myperson"})
         },
         newAdd(){
             this.$router.push({name:"newadd"})
+        },
+        // compile(id){
+        //      this.$http.post('http://localhost:3200/api/compile',{
+        //             id 
+        //      }).then((res)=>{
+
+        //      })
+
+        // },
+        delectadress(id){
+            console.log(id)
+               this.$http.post('http://localhost:3200/api/delectadress',{
+                     token:getCookie('token'),
+                    id
+             }).then((res)=>{
+                console.log(res)
+               this.info = res.msg
+                //console.log(res.msg)
+             })
         }
+
     },
      mounted(){
           let islogin =getCookie('token')
@@ -80,6 +93,11 @@ export default {
     height: 100%;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
+}
+section{
+    flex:1;
+    overflow-y: scroll;
 }
 .header {
   height: 0.9rem;

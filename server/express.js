@@ -203,8 +203,6 @@ app.post('/api/add', function(req, res, next) {
 })
 app.post('/api/deleinfo', function(req, res, next) {
     let info = req.body;
-    //console.log(info);
-    // console.log(req.body.token)
     let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
         if (err) {
             res.send({ code: 0 })
@@ -226,55 +224,6 @@ app.post('/api/deleinfo', function(req, res, next) {
                     }
                 })
             })
-
-            console.log(shopinfoArr.length)
-                // console.log(arr)
-                // shopinfo[decode.username].forEach((item, index) => {
-                //         arr.forEach((v, ind) => {
-                //             if (item.wareId === v) {
-                //                 newArr.push(item)
-                //             }
-                //         })
-                //     })
-                //     //console.log(arr)
-                // console.log(newArr.length)
-
-            // shopinfo[decode.username].forEach((item, index) => {
-            //         console.log(item.wareId)
-            //         newArr.forEach((v, ind) => {
-            //             // let spliceInd;
-            //             if (item.wareId == v.wareId) {
-            //                 // console.log(true)
-            //                 // spliceInd = index
-            //                 //console.log(spliceInd)
-            //                 shopinfo[decode.username].splice(index, 1)
-            //             }
-            //             // let con = shopinfo[decode.username].indexOf(v)
-
-
-
-            //         })
-            //     })
-            // console.log(shopinfo[decode.username].length)
-
-
-            // let shoplist = shopinfo[decode.username].map((item, index) => {
-
-            //     if (item.wareId === info.id) {
-            //         ++item.count
-            //         return item
-            //     } else {
-            //         return item
-            //     }
-
-            // })
-
-
-            //nsole.log(shoplist)
-            // shopinfo[decode.username] = shoplist
-            // console.log(flag)
-
-
             fs.writeFileSync('./shopinfo.json', JSON.stringify(shopinfo))
             res.send({ msg: "成功" })
 
@@ -285,8 +234,6 @@ app.post('/api/deleinfo', function(req, res, next) {
 })
 app.post('/api/adress', function(req, res, next) {
     let info = req.body;
-    //console.log(info);
-
     let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
         if (err) {
             res.send({ code: 0 })
@@ -302,39 +249,82 @@ app.post('/api/adress', function(req, res, next) {
                 citys: req.body.citys,
                 area: req.body.area,
             }
-
-
             if (adress[decode.username]) {
                 adress[decode.username].push(o)
-
-
             } else {
                 adress[decode.username] = [o]
             }
+            adress[decode.username] = adress[decode.username].map((v, ind) => {
+                v.id = ind
+                return v
+            })
             fs.writeFileSync('./adress.json', JSON.stringify(adress))
-
             res.send({ msg: adress })
-                //  res.send({ msg: "成功" })
         }
     })
     next()
 })
 app.post('/api/info', function(req, res, next) {
+        let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+            if (err) {
+                res.send({ code: 0 })
+            } else {
+                let adress = JSON.parse(fs.readFileSync('./adress.json', 'utf-8'));
+                adressinfo = adress[decode.username]
+                console.log(decode.username)
+                console.log(adressinfo)
+                res.send({ msg: adressinfo })
+            }
+
+        })
+
+        next()
+    })
+    // app.post('/api/compile', function(req, res, next) {
+    //     let info = req.body;
+    //     let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
+    //         if (err) {
+    //             res.send({ code: 0 })
+    //         } else {
+    // let adress = JSON.parse(fs.readFileSync('./adress.json', 'utf-8'));
+    // if (adress[decode.username]) {
+    //     adress[decode.username].push(o)
+    // } else {
+    //     adress[decode.username] = [o]
+    // }
+    // adress[decode.username] = adress[decode.username].map((v, ind) => {
+    //     v.id = ind
+    //     return v
+    // })
+    //             fs.writeFileSync('./adress.json', JSON.stringify(adress))
+    //             res.send({ msg: adress })
+    //         }
+    //     })
+    //     next()
+    // })
+app.post('/api/delectadress', function(req, res, next) {
+    let info = req.body;
     let token = jwt.verify(req.body.token, 'bzl', function(err, decode) {
         if (err) {
             res.send({ code: 0 })
         } else {
             let adress = JSON.parse(fs.readFileSync('./adress.json', 'utf-8'));
-            adressinfo = adress[decode.username]
-            console.log(decode.username)
-            console.log(adressinfo)
-            res.send({ msg: adressinfo })
+
+            let con;
+            adress[decode.username].forEach((v, ind) => {
+                if (v.id == info.id) {
+                    con = ind
+                }
+            })
+            console.log('1')
+            console.log(con)
+            adress[decode.username].splice(con, 1)
+            fs.writeFileSync('./adress.json', JSON.stringify(adress))
+            res.send({ msg: adress[decode.username] })
         }
-
     })
-
     next()
 })
 app.listen(3200, function() {
-    console.log('我是端口3000')
+    console.log('我是端口3200')
 })

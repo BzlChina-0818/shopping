@@ -1,18 +1,16 @@
-# vue_project
-
-> A Vue.js project
-
-## Build Setup
-
-``` bash
-# install dependencies
-npm install
-
-# serve with hot reload at localhost:8080
-npm run dev
-
-# build for production with minification
-npm run build
-```
-
-For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
+  *  项目总结
+    *  1 项目介绍
+    717电商项目使用了vue-cli脚手架,这个项目用到了vue和vuex,封装了两个vue插件一个全局的axios拦截器插件,和VUE极简plugin,做提示信息
+    
+    * 2 项目主要功能
+        1 )在主页面(page)路由用到下拉加载功能
+        2 )使用了Cors技术从而实现跨域
+        3 )导航守卫判断用户是否登录，以及用户是从哪个界面来到登录页面
+        4 )登录注册功能
+        5 ) 分类页面 用户切换显示对应数据
+    * 3 优化方面
+     在分类路由中使用vuex判断用户是否请求过数据,如果没请求则请求数据,存储在vuex.如果请求过则用vuex中的数据渲染页面,从而减少用户请求次数,减少服务器压力.
+    * 4 技术拓展方面
+       用nodeJs模拟了服务端,定义接口,写了后台方面的逻辑,主要有登录注册,添加购物车数据存储,以及购物车方面客户全选、增、减、删除等.
+    * 5 收获
+        对于vuex有了更一步认识,对于服务器端所做工作更有深一步的了解，通过使用nodeJs让自己对js原生的方法更为熟悉.同时也对服务器端有更进一步的认识。
