@@ -4,7 +4,21 @@ let httpReq = require('./request.js')
 let app = express()
 let bodyParse = require('body-parser')
 let jwt = require('jsonwebtoken')
+let multer = require('multer');
+let path = require('path')
+var storage = multer.diskStorage({
+    destination: function(req, file, cb) {
+        cb(null, path.resolve(__dirname, 'upload'))
+    },
+    filename: function(req, file, cb) {
+        var str = file.originalname.split('.')
+        cb(null, file.fieldname + '-' + Date.now() + "." + str[1])
+    }
+})
+
+var upload = multer({ storage: storage })
 app.use(bodyParse.json())
+app.use(express.static(path.resolve(process.cwd() + "/../server/upload")))
 app.all("*", function(req, res, next) {
     // Access-Control-Allow-Headers
     res.header({
@@ -323,6 +337,11 @@ app.post('/api/delectadress', function(req, res, next) {
             res.send({ msg: adress[decode.username] })
         }
     })
+    next()
+})
+app.post('/api/upload', upload.single('image'), function(req, res, next) {
+    console.log(req.file)
+    res.send({ msg: "成功", data: "http://localhost:3200/" + req.file.filename })
     next()
 })
 app.listen(3200, function() {

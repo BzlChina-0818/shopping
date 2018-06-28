@@ -7,7 +7,11 @@
         </header>
         <div class="top">
             <div class="img">
-                <!-- <img src="../../assets/img/2.jpg" alt=""> -->
+                <div>
+                     <img :src="url" alt="">
+                     <input type="file" @change="uploadimg">
+                </div>
+               
                 <p>路飞</p>
             </div>
         </div>
@@ -69,12 +73,27 @@
 <script>
 import {getCookie} from '../../until/decode'
 export default {
+    data(){
+            return{
+                url:"/src/assets/img/bing.png"
+            }
+    },
+
     methods:{
        order(){
            this.$router.push({name:"order"})
        },
        adress(){
              this.$router.push({name:"adress"})
+       },
+       uploadimg(e){
+          
+           let fd = new FormData()
+           fd.append('image', e.target.files[0])
+           console.log(fd)
+           this.$http.post('http://localhost:3200/api/upload',fd).then((res)=>{
+              this.url = res.data
+           })
        }
     },
     mounted(){
@@ -157,16 +176,31 @@ export default {
     margin:0 auto;
     padding-top: .2rem;
     text-align: center;
+   
+}
+.img>div{
+    position: relative;
+}
+.img>div input{
+    display:block;
+    width:100%;
+    height:100%;
+    opacity: 0;
+    position: absolute;
+    top:0;
+    left:0;
 }
 .img img{
-    width:80%;
+     background: #ccc;
+    width:100%;
     border-radius: 50%;
+    position: relative;
 }
 .img p{
  
     text-align: center;
     line-height: .4rem;
-    color:#fff;
+    /* color:#fff; */
 }
 </style>
 
