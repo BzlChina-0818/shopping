@@ -13,7 +13,9 @@ Vue.use(lazyload, {
 })
 import totals from '../j-toast/index'
 import '../j-toast/toast.css'
-Vue.use(totals, 3000)
+Vue.use(totals, {
+    timeout: 3000
+})
 new Vue({
     el: '#app',
     template: "<App />",

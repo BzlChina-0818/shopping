@@ -18,7 +18,16 @@ var storage = multer.diskStorage({
 
 var upload = multer({ storage: storage })
 app.use(bodyParse.json())
-app.use(express.static(path.resolve(process.cwd() + "/../server/upload")))
+const ejs = require('ejs')
+app.engine('html', ejs.__express);
+app.set('view engine', 'html');
+
+// app.engine('html', ejs.__express);
+// app.set('view engine', 'html')
+// app.use(express.static(path.resolve(process.cwd()+"/../server/dist")))
+
+
+app.use(express.static(path.resolve(process.cwd() + "/../")))
 app.all("*", function(req, res, next) {
     // Access-Control-Allow-Headers
     res.header({

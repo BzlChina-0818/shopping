@@ -9,10 +9,10 @@ let instance = axios.create({
     //         // "Access-Control-Request-Headers": "content-type"
     // }
 
-    // baseURL: process.env.NODE_ENV == "development" ? 'http://localhost:3200' : "http://mjd.com"
+    baseURL: process.env.NODE_ENV == "development" ? 'http://localhost:3200' : "http://192.168.155.1:3200"
 
 })
-
+console.log(process.env.NODE_ENV)
 instance.interceptors.request.use((config) => {
 
 

@@ -2,14 +2,15 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import Index from '../components/index/index'
+
 import Classify from '../components/home/classify'
 import Contact from '../components/home/contact'
 import Myperson from '../components/home/myperson'
 import Page from '../components/home/page'
-
 const Shopcar = () =>
     import ( /*cart*/ '../components/home/shopcar')
 import Search from '../components/search/search'
+
 import Login from '../components/login/login'
 import Detail from '../components/detail/detail'
 import Register from '../components/register/register'
